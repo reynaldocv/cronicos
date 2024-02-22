@@ -1,0 +1,86 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+    {% include "_header.html" %}
+
+<h3 class="w3-center">Modificar datos de electrocardiograma</h3>
+
+    {% include "paciente_show.html" %}
+
+<div class="w3-row">
+    <div class="w3-col w3-left" style="width:100px"><p></p></div>
+    <div class="w3-col w3-right" style="width:100px"></p></div>
+    <div class="w3-rest w3-container">
+        <h4>Datos de electrocardiograma...</h4>
+       <table class="w3-table-all" id = "myTable">   
+        <tr>
+            <th class="w3-center" >Data de chequeo</th>
+            <th class="w3-center"> Normal/Alterado</th>
+            <th class="w3-center"> Observación </th>
+            <th colspan="2" class="w3-center"> Acciones </th>
+        </tr>     
+        <tr>
+            <form action="{% url 'ekg_alter' %}" method="POST">
+                {% csrf_token %}                
+                
+                <td style="width: 15%;" class="w3-center w3-pale-green">
+                    <input type="hidden" value = "{{nowDni}}" name = "nowDni">
+                    <input type="hidden" value = "{{nowMonth}}" name = "nowMonth">
+                    <input type="hidden" value = "{{nowYear}}" name = "nowYear">
+                    
+                    <input class="w3-input w3-border" name="nowData" value = "{{ekg.data|date:'Y-m-d'}}" id="now_data" min="{{minimumData|date:'Y-m-d'}}" max="{{maximumData|date:'Y-m-d'}}" type="date" onchange="validation()">
+                </td>
+                <td  style="width: 15%;" class="w3-pale-green">
+                    <select class="w3-select w3-border" name="nowNormal" id="now_normal" onchange="validation()">
+                        {% if ekg.esNormal %}
+                            <option value="0">Alterado</option>
+                            <option value="1" selected> Normal</option>                    
+                        {% else %}
+                            <option value="0" selected>Alterado</option>
+                            <option value="1"> Normal</option>                    
+                        {% endif %}
+
+                    </select>
+                </td>
+                <td  style="width: 60%;" class="w3-center w3-pale-green">
+                    <input class="w3-input w3-border" name="nowObservacion" value="{{ekgobservacion}}" type="text" maxlength="50" placeholder="Detalles" id = "now_observación" onkeyup="validation()">
+                </td>
+                <td colspan="2"  style="width: 10%;" class="w3-center w3-pale-green">
+                    <button class="w3-button w3-border w3-border-blue w3-indigo w3-round-large" style="width:100%" id="myButtonAgregar" disabled>Modificar chequeo</button>
+                    
+                
+            </form>
+        </tr>
+      
+            
+      </table>
+    </div>
+  </div>
+  
+
+<script>
+    
+    function validation() 
+    {
+        
+
+        button = document.getElementById("myButtonAgregar");
+
+        
+            button.disabled = false;
+            }  
+
+    </script>
+
+</body>
+</html> 
+

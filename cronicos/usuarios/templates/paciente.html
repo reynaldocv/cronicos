@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+    {% include "_header.html" %}
+
+<h3 class="w3-center">Datos del Paciente </h3>
+
+    {% include "paciente_show.html" %}
+
+
+

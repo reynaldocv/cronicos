@@ -1,0 +1,242 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+
+{% include "_header.html" %}
+
+<h2 class="w3-center">Agregar paciente</h2>
+
+<div class="w3-row">
+    <div class="w3-col w3-left" style="width:100px"><p></p></div>
+    <div class="w3-col w3-right" style="width:100px"></p></div>
+    <div class="w3-rest w3-container">
+
+        <form action="{% url 'paciente_add' %}" method="POST">
+            {% csrf_token %}
+        
+            <table class="w3-table w3-bordered">
+                <tr>
+                    <th colspan="5" class="w3-center" ></th>
+                    <td class = "w3-right" >DNI <i style="color:lightskyblue" class="fa fa-id-card"></i> : </td>
+                    <td class="w3-centers">
+                        <input class="w3-input w3-border" type="text" pattern="[0-9]{8-10}" placeholder="DNI" name = "myDNI" id = "myDNI" onkeyup="mySearch()">
+                    </td>                
+                </tr>
+                <tr>
+                    <td class = "w3-right" >Nombre <i class="fa fa-user"></i>: </td>
+                    <td colspan="4" class="w3-center w3-pale-green">
+                        <input class="w3-input w3-border" name="myNombre" id="myNombre" maxlength="100" type="text" placeholder="Nombre" onkeyup="mySearch()"> 
+                    </td>
+                    <td class = "w3-right">Sexo:</td>
+                    
+                    <td>                       
+                        <input class="w3-radio" type="radio" name="mySexo" value = "1" checked>
+                        <label><i style="color:blue" class="fa fa-mars"></i></label>
+                        &nbsp
+                        <input class="w3-radio" type="radio" name="mySexo" value="0">
+                        <label><i style="color:red;" class="fa fa-venus"></i></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class = "w3-right" >Direccion <i class="fa fa-home"></i> : </td>
+                    <td colspan="4" class="w3-center w3-pale-green">
+                        <input class="w3-input w3-border" name="myDireccion" maxlength="50" id="myDireccion" type="text" placeholder="Dirección">
+                    </td>
+                    <td class = "w3-right " >Celular <i class="fa fa-phone"></i>: </td>
+                    <td class="w3-center w3-pale-green">
+                        <input class="w3-input w3-border" name="myCelular" type="number" placeholder="Celular" maxlength="20">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class = "w3-right" >Centro médico <i class="fa fa-hospital"></i>: </td>
+                    <td colspan="4" class="w3-center w3-pale-green">
+                        <select class="w3-select w3-border" name="myCentro">                            
+                            {% for elem in hospitales %}                                    
+                                <option value="{{elem.id}}"> {{elem.hospital}}</option>
+                            {% endfor %}    
+                        </select>
+                    </td>
+                    <td class = "w3-right" >Historia <i class="fa fa-folder-open"></i>: </td>
+                    <td class="w3-center w3-pale-green">
+                        <input class="w3-input w3-border" name="myHistoria" type="number" placeholder="Historia" maxlength="10">
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td class = "w3-right">Fecha de Nacimiento: <i class="fa fa-star-of-david"></i>:</td>                
+                    <td class ="w3-center w3-pale-green">
+                        <input class="w3-input w3-border" placeholder="dd-mm-yyyy"id="myNacimiento" name="myNacimiento" type="date" onchange="mySearch()">
+                    </td>
+                    <td class = "w3-right">Diagnósticos:</td>                
+                    <td class ="w3-center w3-pale-yellow">
+                        <input class="w3-check" id="myHTA" onchange="mySearch()" name="myHTA" type="checkbox" value="1"> <label>HTA</label>
+                    </td>
+                    <td class ="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" name="myHTAdata" id="myHTAdata" type="date">
+                    </td>                
+                    <td class ="w3-center w3-pale-red">
+                        <input class="w3-check" id="myDM" onchange="mySearch()" name="myDM" type="checkbox" value="1"> <label>DM</label>
+                    </td>
+                    <td class ="w3-center w3-pale-red">
+                        <input class="w3-input w3-border"  name="myDMdata" id="myDMdata" type="date">
+                    </td>  
+                </tr> 
+                <tr>
+                    <td class = "w3-right">Observacion <i class="fa fa-eye"></i>:</td>                
+                    <td colspan="6" class ="w3-center w3-pale-green">
+                        <input class="w3-input w3-border" placeholder="Observación"id="myObservacion" name="myObservacion" type="text" maxlength="100">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7">
+                        <button class="w3-button w3-border w3-border-blue w3-indigo w3-round-large" style="width:100%" id="myButtonAgregar" disabled> <i class="fa fa-plus"></i> Agregar información</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div class="w3-container {{styleMsg}}">
+            <p>{{ msg }}</p>            
+        </div>
+    </div>
+</div>
+
+<div class="w3-row">
+    <div class="w3-col" style="width:15%"><p></p></div>
+    <div class="w3-col" style="width:70%"><p>
+
+        <table class="w3-table w3-bordered" id="myTable">
+        <thead>
+            <tr class="w3-light-grey">
+                <th colspan="8">Datos de pacientes: </th>
+            </tr>
+        </thead>
+
+            {% for x in pacientes %}
+            <tr style="display: none;">  
+            
+                <td> 
+                    {% if x.sexo == 1 %}
+                        <i style="color:blue;" class="fa fa-mars"></i>      
+                    {% else %}
+                        <i style="color:red;" class="fa fa-venus"></i> 
+                    {% endif %}
+
+                    {{x.nombre}} 
+                </td> 
+                <td> 
+                
+                    {% if x.hipertension%}
+                    <span class="w3-tag w3-pale-yellow">Hta</span> 
+                    {% endif %}
+                   
+                    {% if x.deabetes == 1%}
+                    <span class="w3-tag w3-pale-red">Dm</span> 
+                    {% endif %}          
+                </td> 
+                <td> <i style="color:lightskyblue" class="fa fa-id-card"></i>  {{x.dni}} </span> <td>
+                                         
+                <td> <i class="fa fa-phone"></i> <span> {{x.celular}} </span>  </td>
+            
+            
+                <td> <i class="fa fa-star">  </i> {{x.nacimiento|date:"d M Y"}} </td>  
+
+                <td> 
+                    <button class="w3-button w3-border w3-border-blue w3-green w3-round-large" style="width:100%" id="myButtonModificar"> <i class="fa fa-cogs"></i> Modificar Datos</button>
+                    
+                   
+                </td>   
+
+               
+                
+            </tr>           
+            {% endfor %}
+            
+        </table>
+        
+    </div>
+    <div class="w3-col" style="width:15%"><p></p></div>
+</div>
+
+
+
+<script>
+    document.getElementById('myHTAdata').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('myDMdata').value = new Date().toISOString().slice(0, 10);
+    
+    function mySearch() 
+    {        
+        
+        input = document.getElementById("myDNI");
+        nombre = document.getElementById("myNombre");
+        direccion = document.getElementById("myDireccion");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+
+        nacimiento = document.getElementById("myNacimiento");
+
+        hta = document.querySelector("#myHTA:checked")?.value ?? 0;
+        dm = document.querySelector("#myDM:checked")?.value ?? 0;
+        //dm = document.getElementById("myDM");
+
+        //alert(hta)
+        button = document.getElementById("myButtonAgregar");
+
+        msg = document.getElementById("myEdad");
+
+        //msg.value = hta.checked;
+        
+
+        if (filter.length > 7)
+        {
+            seen = false;
+            for (i = 0; i < tr.length; i++) 
+            {
+                td = tr[i].getElementsByTagName("td")[2];
+                if (td) 
+                {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) 
+                    {
+                        tr[i].style.display = "";
+                        seen = true; 
+                    } 
+                    else 
+                    {
+                        tr[i].style.display = "None";
+                    }
+                }
+            }        
+            if (seen == false && nombre.value != "" && (hta == 1 || dm == 1) && nacimiento.value != "")        
+                button.disabled = false;
+            else
+                button.disabled = true;
+        }
+        else
+        {
+            for (i = 1; i < tr.length; i++) 
+            {
+                tr[i].style.display = "None";           
+            }
+            button.disabled = true;
+        }        
+    }
+
+    
+
+</script>
+
+</body>
+</html> 
+

@@ -1,0 +1,106 @@
+
+
+<div class="w3-row">
+    <div class="w3-col w3-left" style="width:100px"><p></p></div>
+    <div class="w3-col w3-right" style="width:100px"><p></p></div>
+    <div class="w3-rest w3-container">
+
+        <table class="w3-table w3-bordered">
+        <thead>
+            <tr class="w3-light-grey">
+            <th colspan="7">Datos Personales: </th>
+            </tr>
+        </thead>
+            <tr>  
+            
+               
+            
+                <td>                    
+                    {% if paciente.sexo == 1 %}
+                        <i style="color:blue;" class="fa fa-mars"></i>      
+                    {% else %}
+                        <i style="color:red;" class="fa fa-venus"></i> 
+                    {% endif %}
+
+                    {{paciente.nombre}} 
+                </td> 
+            
+                <td> <i class="fa fa-star">  </i> {{paciente.nacimiento|date:"d M Y"}} {{paciente.edad|safe}}</td>  
+
+                <td> <i style="color:lightskyblue" class="fa fa-id-card"></i> {{paciente.dni}} <td>
+                    
+                <td> <i class="fa fa-hospital"></i> <span> {{paciente.hospital.hospital}} </span>  </td>
+            
+                <td> <i class="fa fa-folder-open"> </i> {{paciente.historia}} </td>
+        
+            </tr>
+            <tr>  
+               
+                <td> 
+                   {{paciente.hipertension|safe}} {{paciente.deabetes|safe}}
+                
+                       
+                </td> 
+
+                <td> 
+                   {{paciente.deceso|safe}}</i>                
+                </td>      
+        
+                <td> <i class="fa fa-phone"></i>&nbsp{{paciente.celular}} </td>
+
+                <td></td>
+            
+                <td colspan="2"> <i class="fa fa-home"></i> <span> {{paciente.direccion}} </span> </td>
+                
+        
+            
+            </tr>
+
+            {% if paciente.observacion %}
+            
+            <tr>
+                <td colspan="6"> 
+                    <div class="w3-sand">
+                        <i class="fa fa-eye"></i> {{paciente.observacion}}
+                    </div>
+                       
+                </td>                 
+            </tr>
+
+            {% endif %}
+            {% if paciente.muerto == 1 %}
+            
+            <tr>
+                <td colspan="6"> 
+                    <div class="w3-light-gray">
+                        <i class="fa fa-cross"></i> {{paciente.observacionMuerto}}
+                    </div>
+                       
+                </td>                 
+            </tr>
+
+            {% endif %}
+            <tr>
+                <td colspan="6">
+                    <p class="{{msg.style}}" >{{ msg.msg }}</p>   
+                </td>
+
+            </tr>
+        
+            
+        </table>
+    </div>
+</div>
+<div class="w3-row">
+    <div class="w3-col" style="width:15%"><p></p></div>
+    <div class="w3-col" style="width:70%"><p>
+   
+        
+        
+    </div>
+    <div class="w3-col" style="width:15%"><p></p></div>
+</div>
+
+</body>
+</html> 
+

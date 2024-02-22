@@ -1,0 +1,141 @@
+<div class="w3-row">
+    <div class="w3-col" style="width:5%"><p></p></div>
+    <div class="w3-col" style="width:90%">        
+        <table class="w3-table w3-bordered">
+            <tr>
+                <th style="width:10%" class="w3-center" >Datos</th>
+                {% for mes in meses %}
+                    <th>{{mes.nombre}}</th>
+                {% endfor %}
+            
+            </tr>
+            <tr>
+                <td class = "w3-right" >Dotación:</td>
+                {% for elem in consultas.dotacion %}                    
+                <td>
+                    <i onclick="myFunction('{{elem.observacion}}')">{{elem.icon|safe}} </i> 
+                    {{elem.day|safe}}
+                </td>
+                {% endfor %}                    
+            </tr>
+            <tr>
+                <td class = "w3-right">Acto médico:</td>
+                {% for elem in consultas.acto %}                    
+                <td>
+                    {{elem}}
+                        
+                </td>
+                {% endfor %} 
+            </tr> 
+            <tr>
+                <td  class = "w3-right">Presión arterial:</td>                    
+                {% for elem in consultas.presion %}                    
+                <td>
+                    {{elem}}
+                        
+                </td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td  class = "w3-right">Hemogluco test:</td>
+                {% for elem in consultas.hemoglucotest %}                    
+                <td>
+                    {{elem}}
+                        
+                </td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td  class = "w3-right">Peso(kg):</td>
+                {% for elem in consultas.peso %}                    
+                <td>
+                    {{elem}}
+                        
+                </td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td  class = "w3-right">Talla(m):</td>
+                {% for elem in consultas.talla %}                    
+                <td>
+                    {{elem}}
+                        
+                </td>
+                {% endfor %} 
+            </tr>
+        
+            <tr>
+                <td  class = "w3-right">Perímetro(cm):</td>
+                {% for elem in consultas.perimetro %}                    
+                <td>
+                    {{elem}}
+                        
+                </td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td  class = "w3-right">Test Morisky:</td>                
+                {% for elem in consultas.morisky %}                    
+                <td>
+                    {{elem|safe}}
+                        
+                </td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td  class = "w3-right">(IMC):</td>
+              
+                {% for elem in consultas.imc %}                    
+                <td> {{elem}} </td>
+                {% endfor %} 
+            </tr>
+            <tr>
+                <td  class = "w3-right">(IMC - Dx):</td>
+              
+                {% for elem in consultas.imcDescripcion %}                    
+                <td> {{elem|safe}} </td>
+                {% endfor %} 
+            </tr>
+
+            {% if paciente.muerto == 0 %}
+                
+            <tr>
+                <td  class = "w3-right"> </td>
+
+                    {% for i in consultas.status %}                                            
+                    <td>
+                        {% if i.status == 1%}
+                            <form action="{% url 'dotacion_new' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name = "nowDni" value = "{{paciente.dni}}">
+                                <input type="hidden" name = "nowMonth" value = "{{i.month}}">
+                                <input type="hidden" name = "nowYear" value = "{{years.now}}">
+                                
+                                <button class="w3-white w3-border-blue w3-round-large"><i style="color: green;" class="w3-large fa fa-plus"></i></button>
+                            </form>
+                        {% elif i.status == 2 %}
+                            <form action="{% url 'dotacion_mod' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name = "nowDni" value = "{{paciente.dni}}">
+                                <input type="hidden" name = "nowMonth" value = "{{i.month}}">
+                                <input type="hidden" name = "nowYear" value = "{{years.now}}">                            
+
+                                <button class="w3-white w3-border-blue w3-round-large"><i style="color: gray;" class="w3-large fa fa-cogs"></i></button>
+                            </form>
+
+
+                        {% endif %}
+                    
+                            
+                    </td>
+                
+                    {% endfor %}
+               
+
+            </tr>
+            {% endif %}
+        </table>
+    </div>        
+    <div class="w3-col" style="width:5%"><p></p></div>
+</div>
+

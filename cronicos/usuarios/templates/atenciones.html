@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+
+    {% include "_header.html" %}
+ 
+
+
+<h2 class="w3-center">Agregar atención</h2>
+
+    {% include "paciente_show.html" %}
+
+    <input type="hidden" id="now_menu" value="3">
+
+    <div class="w3-row">
+        <div class="w3-col w3-left" style="width: 10%;"><p></p></div>
+        <div class="w3-col w3-right" style="width: 10%;"><p></p></div>
+        <div class="w3-rest w3-container"> 
+            <div class="w3-bar w3-sand">
+                <button class="w3-bar-item w3-button tablink w3-red" id="menu_dot" onclick="openCity(event,'dot','1')"> Dotaciones </button>
+                {% if paciente.hipertension %}
+                    <button class="w3-bar-item w3-button tablink" id="menu_ekg" onclick="openCity(event,'ekg','2')"> Electrocardiogramas </button>
+                {% endif%}
+
+                {% if paciente.deabetes %}                
+                    <button class="w3-bar-item w3-button tablink" id="menu_pie" onclick="openCity(event,'pie','3')"> Chequeos de pies </button>
+                {% endif%}
+                <button class="w3-bar-item w3-button tablink" id="menu_msr" onclick="openCity(event,'msr','4')"> MOSARE </button>
+                <button class="w3-bar-item w3-button tablink" id="menu_ref" onclick="openCity(event,'ref','5')"> Referencias </button>            
+
+                <form action="{% url 'pacienteDni' paciente.dni %}" method="post">
+                      
+                    {% csrf_token %}
+                    <button class="w3-bar-item w3-right w3-button w3-green w3-mobile">Buscar</button>   
+                    <input type="number" class="w3-bar-item w3-input w3-round w3-white w3-right w3-mobile borde" name = "nowYear" min="{{years.min}}" value="{{years.now}}" max = "{{years.max}}">
+                </form> 
+            </div>
+                          
+        </div>
+    </div>   
+      
+    <div id="dot" class="w3-container w3-border city" >       
+        {% include 'atenciones_dotacion.html' %}
+    </div>
+       
+    {% if paciente.hta %}   
+        <div id="ekg" class="w3-container w3-border city" style="display:none">
+            {% include 'atenciones_ekg.html' %}
+        </div>    
+    {% endif %}
+                
+    {% if paciente.dm %}
+    <div id="pie" class="w3-container w3-border city" style="display:none">
+        {% include 'atenciones_pie.html' %}
+    </div>
+    {% endif %}
+    
+    <div id="msr" class="w3-container w3-border city" style="display:none">
+        {% include 'atenciones_mosare.html' %}
+    </div>
+
+    <div id="ref" class="w3-container w3-border city" style="display:none">
+        {% include 'atenciones_referencia.html' %}
+    </div>
+ 
+
+    <div class="w3-row">
+        <div class="w3-col w3-left" style="width: 10%;"><p></p></div>
+        <div class="w3-col w3-right" style="width: 10%;"><p></p></div>
+        <div class="w3-rest w3-container">             
+            <p class="w3-pale-green" id ="demo"> </p>
+        </div>
+    </div>
+    
+    <input type="hidden" id = "id_option" value="{{option}}">
+
+<script>
+    option = document.getElementById("id_option")
+    defaultValue(option.value);
+
+    function defaultValue (input)
+    {
+        var i, x, tablinks;
+        x = document.getElementsByClassName("city");
+
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablink");
+
+        for (i = 0; i < x.length; i++) {
+            
+            tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+        }
+        current_menu = document.getElementById("menu_" + input);
+        current_contain = document.getElementById(input);
+
+        current_contain.style.display = "block";
+        current_menu.className += " w3-red";
+
+
+    }
+
+    function openCity(evt, cityName, value) {
+      var i, x, tablinks;
+      x = document.getElementsByClassName("city");
+
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+
+      tablinks = document.getElementsByClassName("tablink");
+
+      for (i = 0; i < x.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+      }
+
+      document.getElementById(cityName).style.display = "block";
+
+      evt.currentTarget.className += " w3-red";
+    }
+
+    function begin()
+    {
+
+
+
+
+
+    }
+    function myFunction(msg) {
+         document.getElementById("demo").innerHTML = '<i class="fa fa-eye"></i> ' + msg;
+    }
+</script>
+
+</body>
+</html> 
+

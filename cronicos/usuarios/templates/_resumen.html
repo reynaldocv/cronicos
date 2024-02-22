@@ -1,0 +1,142 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+
+<body class="w3-theme-l3">
+
+{% include "_header.html" %}
+
+<h2 class="w3-center">Búsqueda de pacientes</h2>
+
+<div class="w3-row">
+  <div class="w3-col w3-left" style="width:100px"><p></p></div>
+  <div class="w3-col w3-right" style="width:100px"></p></div>
+  <div class="w3-rest w3-container">
+    <div class="w3-panel w3-white w3-card w3-display-container">
+      <div class="w3-row w3-section">
+        <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-user"></i></div>
+        <div class="w3-rest">
+          <input class="w3-input w3-border w3-padding" type="text" placeholder="Busqueda..." id="myInput" onkeyup="myFunction()">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="w3-row">
+  <div class="w3-col w3-left" style="width:100px"><p></p></div>
+  <div class="w3-col w3-right" style="width:100px"><p></p></div>
+  <div class="w3-rest w3-container">
+    <table class="w3-table-all" id = "myTable">
+      <thead>
+        <tr class="w3-light-grey">
+          <th class="w3-center"> # </th>               
+          <th class="w3-center">Nombre</th>     
+          <th  class="w3-center">Edad</th>
+          <th  class="w3-center"><i class="fa fa-id-card"></i> &nbsp - &nbsp  <i class="fa fa-phone"></i></th>
+          <th  class="w3-center">Mosare</th>
+          <th  class="w3-center">Extras</th>
+          <th class="w3-center">{{prevMonthNombre}}<br><span class="w3-small">{{prevYear}}</span> </th>    
+          <th class="w3-center">{{thisMonthNombre}}<br><span class="w3-small">{{thisYear}}</span> </th>      
+          <th ></th>   
+        </tr>
+      </thead>
+        {% for x in mypacientes %}
+        
+        <tr>  
+          <td>{{forloop.counter}}</td>
+          <td>          
+          {% if x.sexo == 1 %}
+              <i style="color:blue;"class="fa fa-mars"></i>      
+          {% else %}
+              <i style="color:red;" class="fa fa-venus"></i> 
+          {% endif %}
+          {{x.nombre}} 
+            <br>
+            {{x.hta|safe}} {{x.dm|safe}}
+         
+        </td>         
+
+        <td> 
+          {{x.edad|safe}}
+         
+
+        </td>        
+
+          <td>  <i style="color:lightskyblue" class="fa fa-id-card"></i> &nbsp{{x.dni}}<br>
+                <i class="fa fa-phone"></i> &nbsp{{x.celular}} </td>
+
+          <td>  </i> {{x.mosare|safe}}</td>
+          
+          <td>  {{x.pie|safe}} <br> {{x.ekg|safe}}          
+          </td>          
+
+          <td class="w3-center">
+            {{x.prevAtencion|safe}}
+            
+          </td> 
+          
+
+          <td class="w3-center"> 
+            {{x.atencion|safe}}
+            
+          </td>       
+        
+          <td>              
+              <a href="{% url 'pacienteDniYear' x.dni year.now %}">
+                <button class="w3-white w3-border-blue w3-round-large">
+                  <i style="color: green;" class="w3-large fa fa-medkit"></i>
+                </button>
+              </a>     
+          </td>                 
+      
+        
+      
+        </tr>
+        {% endfor %}
+          
+    </table>
+  </div>
+</div>
+
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+
+    for (i = 0; i < tr.length; i++) 
+    {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) 
+      {
+        txtValue = td.textContent || td.innerText;        
+        if (txtValue.toUpperCase().indexOf(filter) > -1) 
+        {
+          tr[i].style.display = "";
+        } 
+        else 
+        {
+          tr[i].style.display = "None";
+        }
+      }
+    }
+  }
+  </script>
+  
+
+
+
+</body>
+</html> 
+

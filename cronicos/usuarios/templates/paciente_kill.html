@@ -1,0 +1,94 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+    {% include "_header.html" %}
+
+    <h2 class="w3-center">Agregar datos de deceso </h2>
+
+    {% include "paciente_show.html" %}
+
+    {% if paciente.muerto == 0 %}
+
+        <div class="w3-row">
+            <div class="w3-col w3-left" style="width: 5%;"><p></p></div>
+            <div class="w3-col w3-right" style="width: 5%;"><p></p></div>
+            <div class="w3-rest w3-container"> 
+                <table class="w3-table w3-striped">
+                    <tr>
+                    <th>Fecha de deceso</th>                  
+                    <th>Detalles de deceso</th>
+                    <th>Escribir 'DNI+MuErTo'</th>
+                    <th>Acción</th>
+                    </tr>
+                    <tr>
+                        <form action="{% url 'paciente_kill' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name = "nowDni" value = "{{paciente.dni}}" id="now_Dni">
+                            <input type="hidden" name = "action" value = "matar">
+                            <td style="width: 15%;"> 
+                                <input class="w3-input w3-border" name="nowData" id="now_data" type="date" onchange="validationMuerto()">
+                            </td>
+                            <td  style="width: 50%;">
+                                <input class="w3-input w3-border" name="nowObservacion" type="text" maxlength="50" placeholder="Detalles de deceso" id = "now_observacion">                        
+                            </td>                       
+                            <td style="width: 20%;">
+                                <input class="w3-input w3-border" name="nowCaptcha"  type="text" maxlength="50" placeholder="12345678MuErTo" id = "now_captcha" onkeyup="validationMuerto()"> 
+                            <td style="width: 10%;" >
+                                <button class="w3-button w3-border w3-border-blak w3-black w3-round-large" id="myButtonAgregarMuerto" disabled>  
+                                    <i style="color: white;" class="w3-large fa fa-cross"></i> Declarar muerto
+                                </button>
+                            </td>
+                        </form>
+                    </tr>
+
+                    <tr>
+                        <td colspan="7"> Anteriores Referencias: </td>
+                        <td></td>
+                    </tr>               
+
+                    </tr>
+                </table>
+            </div>
+        </div>   
+
+    {% endif %}
+
+
+    
+           
+
+
+<script>
+    function validationMuerto()
+    {
+        fecha = document.getElementById("now_data");
+        captcha = document.getElementById("now_captcha");
+        dni = document.getElementById("now_Dni");
+
+        button = document.getElementById("myButtonAgregarMuerto");
+
+        txt = dni.value + "MuErTo";
+
+        if (captcha.value == txt && fecha.value != "")
+            button.disabled = false;
+
+        else
+            button.disabled = muerto;
+
+    }
+  
+</script>
+
+</body>
+</html> 
+

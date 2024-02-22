@@ -1,0 +1,107 @@
+
+    <div class="w3-row">
+        <div class="w3-col w3-left" style="width: 5%;"><p></p></div>
+        <div class="w3-col w3-right" style="width: 5%;"><p></p></div>
+        <div class="w3-rest w3-container"> 
+            <table class="w3-table w3-striped">
+                <tr>
+                  <th class="w3-center">Data</th>
+                  <th class="w3-center">Creatinina</th>
+                  <th class="w3-center">TFGe</th>
+                  <th class="w3-center">Albuminuria </th>
+                  <th class="w3-center">Creatinuria </th>
+                  <th class="w3-center">Tasa AC</th>
+                  <th class="w3-center">Descripción</th>
+                  <th class="w3-center">Acción</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td class="w3-center">(mg %)</td>
+                    <td class="w3-center">(ml/m in 1, 73m 2s c)</td>
+                    <td class="w3-center" >(mg/dl)</td>
+                    <td class="w3-center">(md/dl)</td>
+                    <td class="w3-center">(mg/g)</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                <tr>
+                    <form action="{% url 'mosare_add' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name = "nowDni" value = "{{paciente.dni}}">
+                        <input type="hidden" name = "nowYear" value = "{{years.now}}">
+                        <td> 
+                            <input class="w3-input w3-border" name="nowData" id="now_dataMosare" type="date" min="{{days.first|date:'Y-m-d'}}" max="{{days.last|date:'Y-m-d'}}" value="{{mosare.data|date:'Y-m-d'}}" onchange="validationMosare()">
+                        </td>
+                        <td>
+                            <input class="w3-input w3-border" name="nowCreatinina" type="number" step=".001" maxlength="50" placeholder="Detalles" id = "id_creatinina" value="{{mosare.creatinina}}" onkeyup="validationMosare()">
+                        </td>
+                        <td> 
+                            <input class="w3-input w3-border" name="nowTfge" type="number" step=".001" maxlength="50" placeholder="Detalles" id = "id_tfge" value="{{mosare.tfge}}" onkeyup="validationMosare()">                    
+                        </td>
+                        <td> 
+                            <input class="w3-input w3-border" name="nowAlbuminuria" type="number" step=".001" maxlength="50" placeholder="Detalles" id = "id_albuminuria" value="{{mosare.albuminuria}}" onkeyup="validationMosare()">
+                        </td>
+                        <td> 
+                            <input class="w3-input w3-border" name="nowCreatinuria" type="number" step=".001" maxlength="50" placeholder="Detalles" id = "id_creatinuria" value="{{mosare.creatinuria}}" onkeyup="validationMosare()">
+                        </td>
+                        <td>
+                            <input class="w3-input w3-border" readonly name="nowTasa" type="text" maxlength="50" placeholder="Detalles" id = "id_tasa" value="{{mosare.tasa}}">
+                        </td>
+                        <td>
+                            <input class="w3-input w3-border" readonly  name="nowDescripcion" type="text" maxlength="50" placeholder="Detalles" id = "id_descripcion" value="{{mosare.tasaDescripcion}}">
+                        </td>
+                        <td>
+                        {% if paciente.muerto == 0 %}
+                            {% if mosare.seen == 0 %}
+                                <button class="w3-button w3-border w3-border-blue w3-indigo w3-round-large" style="width:100%" id="btn_mosare_agregar" disabled>Agregar Mosare</button>
+                            {% else %}
+                                <button class="w3-button w3-border w3-border-blue w3-indigo w3-round-large" style="width:100%" id="btn_mosare_agregar" disabled>modificar Mosare</button>
+
+                            {% endif%}
+                        {% endif %}
+                        </td>
+                    </form>
+                </tr>                
+              </table>
+        </div>
+    </div>   
+
+<script>
+    validationMosare();
+
+    function validationMosare() 
+    {
+        dataMosare = document.getElementById("now_dataMosare");
+        creatinina = document.getElementById("id_creatinina");
+        creatinuria = document.getElementById("id_creatinuria");
+        albuminuria = document.getElementById("id_albuminuria");
+        tfge = document.getElementById("id_tfge");
+        
+        tasa = document.getElementById("id_tasa");
+        descripcion = document.getElementById("id_descripcion");
+        
+        button = document.getElementById("btn_mosare_agregar");
+
+        //alert(creatinina.value + tfge.value + albuminuria.value + creatinuria.value);
+        
+        if (dataMosare.value != "")
+        {
+            button.disabled = false;
+        }
+        else
+        {
+            button.disabled = true; 
+        }
+
+        if (creatinina.value != "" && creatinuria.value != "" && albuminuria.value != "" && tfge.value != "")
+        {
+            tasa.value = creatinina.value + creatinuria.value + albuminuria.value + tfge.value;
+            descripcion.value = "value...."
+        }
+
+    }
+</script>
+
+</body>
+</html> 
+

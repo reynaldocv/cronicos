@@ -1,0 +1,157 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+{% include "_header.html" %}
+
+<h3 class="w3-center">Agregar atención</h3>
+
+{% include "paciente_show.html" %}
+
+<div class="w3-container w3-teal">
+<p></p>  
+</div>
+
+<form action="{% url 'dotacion_add' %}" method="POST">
+    {% csrf_token %}
+    <div class="w3-row">
+        <div class="w3-col" style="width:20%"><p></p></div>
+        <div class="w3-col" style="width:60%">
+
+            <table class="w3-table w3-bordered">
+                <tr>
+                <th class="w3-center" >Datos a recopilar</th>
+                <th colspan="2" class="w3-center">{{prevMonth.name}}/{{years.prev}}</th>
+                <th colspan="2" class="w3-center w3-pale-yellow" >{{thisMonth.name}}/{{years.now}}</th>
+                </tr>
+                <tr>
+                    <td class = "w3-right" >Número de la dotacion:</td>
+                    <td colspan="2">
+                        <input class="w3-input w3-border" type="text" value="{{prevAtencion.dotacion|safe}}" readonly>
+                        <input type="hidden" name="nowDni" value="{{thisDni}}" readonly>
+                        <input type="hidden" name="nowMonth" value="{{thisMonth.int}}" readonly>
+                        <input type="hidden" name="nowYear" value="{{years.now}}" readonly>
+                        
+                    </td>
+                    <td colspan="2" class="w3-pale-yellow">
+                        <select class="w3-select w3-border" name="nowDotacion" id="now_dotation" onchange="validation()">
+                        <option value="" disabled selected>Número de dotación</option>
+                        <option value="1">I dotación</option>
+                        <option value="2">II dotación</option>
+                        <option value="3">III dotación</option>
+                        <option value="0">(Otros) dotación particular</option>
+                        
+                        </select></td>
+                </tr>
+                
+                <tr>
+                    <td class = "w3-right">Dia y acto médico de la atención:</td>
+                    <td><input class="w3-input w3-border" type="date"  value="{{prevAtencion.fecha|date:'Y-m-d'}}" placeholder="Fecha de atención" readonly></td>
+                    <td><input class="w3-input w3-border" type="number" value="{{prevAtencion.acto}}" placeholder="Acto médico" readonly></td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" name="nowData" id="now_data" type="date" min="{{datas.minimumData|date:'Y-m-d'}}" max="{{datas.maximumData|date:'Y-m-d'}}" onchange="validation()">
+                    </td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" name="nowActo" id="now_acto" type="number" placeholder="Acto médico"></td>
+                </tr> <tr>
+                    <td  class = "w3-right">Presión arterial/Hemogluco test:</td>
+                    <td><input class="w3-input w3-border" step="0.001" type="text" value="{{prevAtencion.presion}}" placeholder="Presion arterial" readonly></td>
+                    <td><input class="w3-input w3-border" type="number" value="{{prevAtencion.hemotest}}" placeholder="Hemogluco test" readonly></td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" type="text" name = "nowPresion" id = "now_presion" placeholder="Presion arterial">
+                    </td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" type="number" step="0.001" name = "nowHemotest" id = "now_hemotest" placeholder="Hemogluco test">
+                    </td>
+                </tr>
+                <tr>
+                    <td  class = "w3-right">Peso(kg)/talla(m):</td>
+                    <td><input class="w3-input w3-border" type="number" placeholder="Peso" readonly value="{{prevAtencion.peso}}"></td>
+                    <td><input class="w3-input w3-border" type="number" placeholder="Talla"readonly value="{{prevAtencion.talla}}"></td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" step="0.001" name="nowPeso" id="now_peso" type="number" placeholder="Peso" min = 1 max = 300 onkeyup="validation()">
+                    </td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" step="0.001" name="nowTalla" id="now_talla" type="number" placeholder="Talla" min = "0.2" max = "2.5" onkeyup="validation()">                
+                    </td>
+                </tr>
+            
+                <tr>
+                    <td  class = "w3-right">Perímetro(cm)/test Morisky:</td>
+                    <td><input class="w3-input w3-border" type="number"value = "{{prevAtencion.perimetro}}" placeholder="Perímetro abdominal" readonly></td>
+                    <td>
+                        <input class="w3-input w3-border" type="text" value="{{prevAtencion.morisky|safe}}" readonly>
+                    </td>
+                        
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" name="nowPerimetro" id = "now_perimetro" type="number" placeholder="Perímetro abdominal"> 
+                    </td>
+                    <td class="w3-center w3-pale-yellow">
+                        <select class="w3-select w3-border" name ="nowMorisky" id = "now_morisky">
+                            <option value="" selected>Test Morisky </option>
+                            <option value="1"> Adecuado </option>
+                            <option value="0"> No adecuado </option>
+                        </select>
+                    </td>
+                </tr>                
+                <tr>
+                    <td  class = "w3-right">Observacion:</td>
+                    <td colspan="2" ><input class="w3-input w3-border" value="{{prevAtencion.observacion}}" type="text" placeholder="Detalles" id = "now_observación" readonly></td>
+                    <td colspan="2" class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" name="nowObservacion" type="text" maxlength="50" placeholder="Detalles" id = "now_observación">
+                    </td>
+                
+                </tr>
+                
+                    <tr>
+                    <td colspan="3"></td>
+                    <td colspan="2">
+                        <button class="w3-button w3-border w3-border-blue w3-indigo w3-round-large" style="width:100%" id="myButtonAgregar" disabled>Agregar información</button>
+                    </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="w3-col" style="width:20%"><p></p></div>
+    </div>
+</form>
+
+
+
+
+<script>
+    
+    function validation() 
+    {
+        talla = document.getElementById("now_talla");
+        peso = document.getElementById("now_peso");
+        
+
+        dotacion = document.getElementById("now_dotation");
+        data = document.getElementById("now_data");
+
+        button = document.getElementById("myButtonAgregar");
+
+        if (dotacion.value != "" && data.value != "")
+        {
+            button.disabled = false;
+        }
+        else
+        {
+            button.disabled = true; 
+        }
+
+    }
+    </script>
+
+</body>
+</html> 
+

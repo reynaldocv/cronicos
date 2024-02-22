@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+    {% include "_header.html" %}
+
+<h3 class="w3-center">Modificar datos de Mosare</h3>
+
+    {% include "paciente_show.html" %}
+    <div class="w3-row">
+        <div class="w3-col w3-left" style="width: 5%;"><p></p></div>
+        <div class="w3-col w3-right" style="width: 5%;"><p></p></div>
+        <div class="w3-rest w3-container"> 
+            <table class="w3-table w3-striped">
+                <tr>
+                  <th>Data</th>
+                  <th>Creatinina ()</th>
+                  <th>TFGE ()</th>
+                  <th>Albuminuria ()</th>
+                  <th>Creatinuria ()</th>
+                  <th>Tasa </th>
+                  <th>Descripción</th>
+                  <th>Acción</th>
+                </tr>
+                <tr>
+                    <form action="{% url 'mosare_alter' %}" method="POST">
+                        {% csrf_token %}
+                       
+                        <input type="hidden" name = "nowDni" value = "{{thisDni}}">
+                        <input type="hidden" name = "nowYear" value = "{{years.now}}">
+                        <input type="hidden" name = "nowId" value = "{{mosare.id}}">
+                        <td> 
+                            <input class="w3-input w3-border" name="nowData" id="now_data" value="{{mosare.data|date:'Y-m-d'}}" type="date" min="{{days.first|date:'Y-m-d'}}" max="{{days.last|date:'Y-m-d'}}" onchange="validationDataMosare()">
+                        </td>
+                        <td>
+                            <input class="w3-input w3-border" name="nowCreatinina" value = "{{mosare.creatinina}}" type="number" step=".001" maxlength="50" placeholder="Detalles" id = "now_creatinina" onkeyup="validationDataMosare()">
+                        </td>
+                        <td> 
+                            <input class="w3-input w3-border" name="nowTfge" value="{{mosare.tfge}}" type="number" step=".001" maxlength="50" placeholder="Detalles" id = "now_tfge" onkeyup="validationDataMosare()">                    
+                        </td>
+                        <td> 
+                            <input class="w3-input w3-border" name="nowAlbuminuria" value="{{mosare.albuminuria}}" type="number" step=".001" maxlength="5" placeholder="Detalles" id = "now_albuminuria" onkeyup="validationDataMosare()">
+                        </td>
+                        <td> 
+                            <input class="w3-input w3-border" name="nowCreatinuria" value ="{{mosare.creatinuria}}" type="number" step=".001" maxlength="5" placeholder="Detalles" id = "now_creatinuria" onkeyup="validationDataMosare()">
+                        </td>
+                        <td>
+                            <input class="w3-input w3-border" readonly name="nowTasa" value="{{mosare.tasa}}" type="text" maxlength="50" placeholder="Detalles" id = "now_tasa">
+                        </td>
+                        <td>
+                            <input class="w3-input w3-border" readonly name="nowDescripcion" value="{{mosare.tasaDescripcion}}" type="text" maxlength="5" placeholder="Detalles" id = "now_descripcion">
+                        </td>
+                        <td>
+                            <button class="w3-white w3-border-blue w3-round-large" id = "btn_mosare_modificar" name = "btnMosareModificar"><i style="color: green;" class="w3-large fa fa-cog"></i></button>
+                        </td>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </div>   
+
+<script>
+    function validationDataMosare() 
+    {
+        data = document.getElementById("now_data");
+        creatinuria = document.getElementById("now_creatinuria");
+        creatinina = document.getElementById("now_creatinina");
+        tfge = document.getElementById("now_tfge");
+        albuminuria = document.getElementById("now_albuminuria");
+
+        tasa = document.getElementById("now_tasa");
+        descripcion = document.getElementById("now_descripcion");
+
+        if (creatinuria != "" && tfge != "" && creatinina != "" && albuminuria != "")        
+        {
+            tasa.value = creatinuria.value + creatinina.value + tfge.value + albuminuria.value; 
+            descripcion.value = creatinuria.value + creatinina.value + tfge.value + albuminuria.value; 
+
+        }
+
+    }
+</script>
+
+</body>
+</html> 
+

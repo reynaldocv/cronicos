@@ -1,0 +1,61 @@
+<div class="w3-row">
+    <div class="w3-col" style="width:5%"><p></p></div>
+    <div class="w3-col" style="width:90%">
+
+        <table class="w3-table w3-bordered">
+            <tr>
+                <th class="w3-center" >Datos</th>
+                {% for mes in meses %}
+                    <th>{{mes.nombre}}</th>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td class = "w3-right" >Resultado:</td>
+                {% for elem in ekgs.ekg %}                    
+                <td>                                        
+                    <i onclick="myFunction('{{elem.observacion}}')">{{elem.icon|safe}} </i> {{elem.day}}
+                </td>
+                {% endfor %}                    
+            </tr>
+
+            {% if paciente.muerto == 0 %}
+            <tr>
+                <td  class = "w3-right"> </td>
+                
+                {% for ekg in ekgs.status %}                                            
+                <td>                    
+                    {% if ekg.status == 1%}
+                        <form action="{% url 'ekg_new' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name = "nowDni" value = "{{paciente.dni}}">
+                            <input type="hidden" name = "nowMonth" value = "{{ekg.month}}">
+                            <input type="hidden" name = "nowYear" value = "{{years.now}}">
+                            <input type="hidden" name = "nowMenu" value = "2">
+                            
+                            <button class="w3-white w3-border-blue w3-round-large"><i style="color: green;" class="w3-large fa fa-plus"></i></button>
+                        </form>
+                    {% elif ekg.status == 2 %}
+                        
+                        <form action="{% url 'ekg_mod' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name = "nowDni" value = "{{paciente.dni}}">
+                            <input type="hidden" name = "nowMonth" value = "{{ekg.month}}">
+                            <input type="hidden" name = "nowYear" value = "{{years.now}}">
+                            <input type="hidden" name = "nowMenu" value = "2">
+
+                            <button class="w3-white w3-border-blue w3-round-large"><i style="color: gray;" class="w3-large fa fa-cogs"></i></button>
+                        </form>
+
+
+                    {% endif %}
+                        
+                </td>
+                {% endfor %}
+
+            </tr>
+            {% endif %}
+        </table>
+    </div>        
+    <div class="w3-col" style="width:5%"><p></p>
+</div>
+</div>

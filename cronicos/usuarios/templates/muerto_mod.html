@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<title>H. I Urubamba - Sistema de Pacientes Crónicos</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="{% static 'w3css/w3.css' %}"> 
+<link rel="stylesheet" type="text/css" href="{% static 'fontawesome/css/all.css' %}">
+
+<body class="w3-theme-l3">
+
+{% include "_header.html" %}
+
+<h3 class="w3-center">Modificar atención</h3>
+
+{% include "paciente_show.html" %}
+
+<div class="w3-container w3-teal">
+<p></p>  
+</div>
+
+<form action="{% url 'muerto_alter' %}" method="POST">
+    {% csrf_token %}
+    <div class="w3-row">
+        <div class="w3-col" style="width:15%"><p></p></div>
+        <div class="w3-col" style="width:70%">
+
+            <table class="w3-table w3-bordered">
+                <tr>
+                    <th style="width: 15%;" class="w3-center" >Fecha de Deceso</th>
+                    <th style="width: 60%;" class="w3-center" >Observación de Deceso</th>
+                    <th style="width: 15%;" class="w3-center" >Acciones</th>                    
+                </tr>
+                
+                <tr>                    
+                    <td class="w3-center w3-pale-yellow">  
+                        <input type="hidden" name="nowDni" value="{{paciente.dni}}">                     
+                        <input class="w3-input w3-border" name="nowFechaMuerto" id="now_data" type="date" value="{{paciente.fechaMuerto|date:'Y-m-d'}}">
+                    </td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" name="nowObservacionMuerto" type="text" value="{{paciente.observacionMuerto}}" >
+                    </td>
+                    <td colspan="2">
+                        <button class="w3-button w3-border w3-border-blue w3-indigo w3-round-large" style="width:100%" id="myButtonAgregar">Modificar información</button>
+                    </td>
+                    
+                </tr>
+                
+                    
+            </table>            
+        </div>
+        <div class="w3-col" style="width:15%"><p></p></div>
+    </div>
+</form>
+</html> 
+
