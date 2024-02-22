@@ -12,10 +12,10 @@
 
 <body class="w3-theme-l3">
 
-    {% include "header.html" %}
+    {% include "_header.html" %}
 
    
-    <form action="{% url 'superAdmin' %}" method="POST">
+    <form action="{% url 'super_admin' %}" method="POST">
         {% csrf_token %}
         <button> go </button>
         <div class="w3-padding">

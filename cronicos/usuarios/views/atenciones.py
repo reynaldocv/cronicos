@@ -30,8 +30,8 @@ def isValidMesYear(_month, _year, minData):
 
     return _minData <= data < today
 
-def resumen(request):
-    mypacientes = Paciente.objects.filter(muerto = 0).order_by("nombre")
+def resumenm(request):
+    _pacientes = pacientes_full(True, None)
 
     thisMonth = date.today().month
     thisYear = date.today().year 
@@ -43,7 +43,7 @@ def resumen(request):
         prevMonth = 12
         prevYear -= 1  
 
-    for (i, paciente) in enumerate(mypacientes): 
+    for (i, paciente) in enumerate(_pacientes): 
         _dni = paciente.dni
 
         _id = "-".join([_dni, str(thisMonth), str(thisYear)])
@@ -85,22 +85,61 @@ def resumen(request):
         else: 
             paciente.ekg = codeHtml.html_cardiograma(None)
 
-        paciente.edad = codeHtml.html_edad(paciente.nacimiento, paciente.estaMuerto, paciente.fechaMuerto, 0)
+        paciente.edad = codeHtml.html_edad(paciente.nacimiento, paciente.muerto, paciente.fechaMuerto, 0)
 
-        paciente.hta = codeHtml.html_hipertension(paciente.hipertension, paciente.fechaHipertension)
-        paciente.dm  = codeHtml.html_deabetes(paciente.deabetes, paciente.fechaDeabetes)
+        paciente.hta = codeHtml.html_hipertension(paciente.hta, paciente.fechaHta)
+        paciente.dm  = codeHtml.html_deabetes(paciente.dm, paciente.fechaDm)
 
     template = loader.get_template("_resumen.html")
 
            
     context = {
-        "mypacientes": mypacientes,
-        "prevMonth": prevMonth, 
-        "month": {"prev": meses[prevMonth], "now": thisMonth, "nowInt": thisMonth},
+        "pacientes": _pacientes,
+        "month": {"prev": meses[prevMonth], "now": meses[thisMonth], "nowInt": thisMonth},
         "year": {"prev": prevYear, "now": thisYear},
     }
 
     return HttpResponse(template.render(context, request))
+
+
+def resumen(request):
+    _pacientes = pacientes_full(True, None)
+
+    thisMonth = date.today().month
+    thisYear = date.today().year 
+    
+    prevMonth = thisMonth - 1
+    prevYear = thisYear
+
+    prevDotacion = Atencion.objects.filter(fecha__month = prevMonth, fecha__year = prevYear)
+    lastDotacion = Atencion.objects.filter(fecha__month = thisMonth, fecha__year = thisYear)
+
+    prevDot = {}
+    lastDot = {}
+
+    for dotacion in prevDotacion: 
+        prevDot[dotacion.dni.dni] = codeHtml.html_dotacion(dotacion)
+
+    for dotacion in lastDotacion: 
+        lastDot[dotacion.dni.dni] = codeHtml.html_dotacion(dotacion)
+
+    for _paciente in _pacientes: 
+        if _paciente.dni.dni in lastDot: 
+            _paciente.atencion = lastDot[_paciente.dni.dni]
+        
+        if _paciente.dni.dni in prevDot: 
+            _paciente.prevAtencion = preevDot[_paciente.dni.dni]    
+
+    template = loader.get_template("_resumen.html")
+           
+    context = {
+        "pacientes": _pacientes,        
+        "month": {"prev": meses[prevMonth], "now": meses[thisMonth], "nowInt": thisMonth},
+        "year": {"prev": prevYear, "now": thisYear},
+    }
+
+    return HttpResponse(template.render(context, request))
+
 
 
 def atencion_kit(_dni, _thisYear):

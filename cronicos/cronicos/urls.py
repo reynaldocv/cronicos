@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from usuarios.views.pacientes import *
 from usuarios.views.atenciones import *
+from usuarios.views.reporters import *
 from usuarios.views import views
 
 urlpatterns = [
@@ -61,6 +62,12 @@ urlpatterns = [
     path("referencia/add/"  , referencia_add  , name = "referencia_add"),
     path("referencia/mod/"  , referencia_mod  , name = "referencia_mod"),
     path("referencia/alter/", referencia_alter, name = "referencia_alter"),
+
+
+
+
+    path("superAdmin", super_admin, name = "super_admin"),
+
 
 
 
