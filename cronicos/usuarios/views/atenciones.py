@@ -117,6 +117,8 @@ def resumen(request):
     prevDot = {}
     lastDot = {}
 
+    #pies = Pie.objects.raw("select * from Pie group by dni")
+
     for dotacion in prevDotacion: 
         prevDot[dotacion.dni.dni] = codeHtml.html_dotacion(dotacion)
 
@@ -124,11 +126,13 @@ def resumen(request):
         lastDot[dotacion.dni.dni] = codeHtml.html_dotacion(dotacion)
 
     for _paciente in _pacientes: 
-        if _paciente.dni.dni in lastDot: 
-            _paciente.atencion = lastDot[_paciente.dni.dni]
+        if _paciente.dni in lastDot: 
+            _paciente.atencion = lastDot[_paciente.dni]
         
-        if _paciente.dni.dni in prevDot: 
-            _paciente.prevAtencion = preevDot[_paciente.dni.dni]    
+        if _paciente.dni in prevDot: 
+            _paciente.prevAtencion = prevDot[_paciente.dni]    
+
+    #pies = Pie.objects.dis
 
     template = loader.get_template("_resumen.html")
            
@@ -136,6 +140,8 @@ def resumen(request):
         "pacientes": _pacientes,        
         "month": {"prev": meses[prevMonth], "now": meses[thisMonth], "nowInt": thisMonth},
         "year": {"prev": prevYear, "now": thisYear},
+        "pies":_pacientes,
+        
     }
 
     return HttpResponse(template.render(context, request))

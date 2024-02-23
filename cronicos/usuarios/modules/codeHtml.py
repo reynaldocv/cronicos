@@ -127,7 +127,7 @@ def html_pie(pie):
         else: 
             ans += ' <i style="color:gray" '
 
-        ans += 'class="fa fa-shoe-prints"></i> '  + meses[pie.data.month] + " " + str(pie.data.year) 
+        ans += 'class="fa fa-shoe-prints"></i> '  + meses[pie.data.month] + " " + str(pie.data.year)
   
     return ans 
 
