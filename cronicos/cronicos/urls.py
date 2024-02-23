@@ -21,6 +21,9 @@ from usuarios.views.atenciones import *
 from usuarios.views.reporters import *
 from usuarios.views import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', resumen, name = 'resumen'),
@@ -63,12 +66,6 @@ urlpatterns = [
     path("referencia/mod/"  , referencia_mod  , name = "referencia_mod"),
     path("referencia/alter/", referencia_alter, name = "referencia_alter"),
 
-
-
-
     path("superAdmin", super_admin, name = "super_admin"),
 
-
-
-
-]
+] 
