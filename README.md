@@ -240,10 +240,9 @@ python3 manage.py collectstatic
 
 ```
 > [!IMPORTANT]
-> 
-Modify the parameter ALLOWED HOST to add our URL, in settings.py file: 
+> Modify the parameter ALLOWED HOST to add our URL **reynaldocv.pythonanywhere.com**, in settings.py file: 
 ```
-ALLOWED_HOSTS = ['192.168.1.12', "localhost", "127.0.0.1","**reynaldocv.pythonanywhere.com**"]
+ALLOWED_HOSTS = ['192.168.1.12', "localhost", "127.0.0.1","reynaldocv.pythonanywhere.com"]
 ```
 
 Now, you are done! :tada:
