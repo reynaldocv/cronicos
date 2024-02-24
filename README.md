@@ -60,7 +60,7 @@ STATICFILES=[STATIC_ROOT]
 Activate the source and collect the statics files using the following commands
 
 ```
-sourde hospita/hospital_env/bin/activate
+source hospita/hospital_env/bin/activate
 python3 hospital/cronicos/manage.py collectstatic
 ```
 
@@ -174,139 +174,74 @@ Restart the Apache server using the following command:
 ```
 sudo service apache2 restart
 ```
-And the webpage is done!
-
-
-
-
-
+And the webpage is done! :tada:
 
 # Deploy on pythonanywhere.com
 
+## Steps
+1. steps on Consoles' tab
+2. steps on Web App's tab
+3. Database setup
 
+## Steps on Consoles' tab
+- First, we create a new console, and on it,
+```
+# Download the git project
+git clone https://github.com/reynaldocv/cronicos.git
+# Create a environment
+mkvirtualenv hospital_env --python=/usr/bin/python3.8
+# Install Django
+pip install django
+```
+## Steps on Web App's tab
+Create a Web app with Manual Config
+Head over to the Web tab and create a new web app, choosing the "Manual Configuration" option and the right version of Python (the same one you used to create your virtualenv).
+<p align="center">
+  <img src="/imgs/django.png">
+</p>
 
-
-
-
-
-
-
-
-- [x] #739
-- [ ] https://github.com/octo-org/octo-repo/issues/740
-- [ ] Add delight to the experience when all tasks are complete :tada:
-
-- Visão geral do projeto: 
-
-    O projeto consiste em saber se tem vagas (ou não) num estacionamento. 
-
-    A projeto a discutir, pode ajudar às pessoas a saber onde eles podem estacionar seu veiculo (no momento), e
-fazer uma estimativa a futuro se no estacionamento.
-
+Configuring the environment part:
 
 <p align="center">
-  <img height="200" src="/img/img_car.jpeg">    
-   
+  <img src="/imgs/env.png">
 </p>
 
-
-# Descrição técnica
-  
-- RASPBERRY PI 3 MODEL B: É um computador de baixo custo e que tem o tamanho de um cartão de crédito desenvolvido no Reino Unido pela Fundação Raspberry Pi. Para usá-lo, basta plugar um teclado e um mouse padrão a ele e conectar tudo isso a um monitor ou a uma televisão. Os modelos custam entre US$ 25 e US$ 35.
+Configuring the code part:
 
 <p align="center">
-  <img src="/img/Raspberry.png">
+  <img src="/imgs/code.png">
 </p>
 
-
-      - Especificações:      
-        - A 1.2GHz 64-bit quad-core ARMv8 CPU
-        - 802.11n Wireless LAN
-        - Bluetooth 4.1 & Bluetooth Low Energy (BLE)
-        - BCM2837, 1.2GHz 64-bit quad-core ARM Cortex-A53
-        - 1GB RAM
-        - 10/100 Ethernet port
-        - 802.11n WiFi NIC
-        - Bluetooth 4.1 & Bluetooth Low Energy (BLE)
-        - HDMI port
-        - USB 2.0 interface x 4
-        - Micro SD card slot
-        - Combined 3.5mm audio jack and composite video
-        - 40-pin GPIO interface
-        - Camera interface (CSI)
-        - Display interface (DSI)
-        - Upgraded power management
-        - supports more peripherals (requires a 2.5A - 3.0A power supply)Tensão de Alimentação:  4-30V;
-        
- - 2 Câmeras: Usamos dois tipos: uma de um celular e outra com conexão USB  
-
-        - Camera Multilaser WC040
-  <p align="center">
-  <img height="200" src="/IoT project - slides/img/slide_cam1.jpeg">  
-  </p>
-    
-        - Celular LG G3
-    
-  <p align="center">  
-  <img height="200" src="/IoT project - slides/img/slide_cam2.jpg">
-  </p>      
-        
-## Open-design (extra)
-
+Configuring the wsgi.py file. 
 
 <p align="center">
-   <img height="500" src="/IoT project - slides/img/estrutura.jpeg">
+  <img src="/imgs/wsgi.png">
 </p>
 
-# Instalação
-- Em um dos celulares:
-    
-    - Instalamos o aplicativo IP Webcam e executamos. O aplicativo dá um IP (que pode ser acessado numa LAN) onde nós podemos monitorar usando qualquer navegador web (veja a seguiente pagina web https://pplware.sapo.pt/smartphones-tablets/android/ip-webcam-como-usar-o-seu-android-como-uma-webcam/ para mais dados).
+Configuring the static file part:
 
-- No Raspberry (deve estar na misma LAN do celular com o IP Webcam) o simplesmente conetados a uma câmera USB:
-    
-    - Executamos o seguinte [código em python](cod_raspberry/cam.py) que tira a fotoe que é subida num host (nesse caso foi https://www.ime.usp.br/~reynaldo/phd/internet_coisas/ e o processo acontece cada 60 seg.) além disso faz uma análise da imagem com o Computer Vision API - Azure, a informação gerada e salvada num json e num dataset do pythonanywhere. 
-    
-- No https://www.pythonanywhere.com/:
-    
-    - Criamos os seguintes APIs executando o seguinte [código em python](cod_pythonanywhere/app_flask.py) que tem comandos para fazer consultas na "API de Pesquisa de Visual Computational" (Veja as seguintes paginas web https://techtutorialsx.com/2016/12/27/python-anywhere-deploying-a-flask-server-on-the-cloud/ e https://azure.microsoft.com/pt-br/services/cognitive-services/computer-vision/ para mais dados). Os servicios criados foram:
-        
-        - http://reynaldocv.pythonanywhere.com/add/{text1}
-        - http://reynaldocv.pythonanywhere.com/dataset/
-        - http://reynaldocv.pythonanywhere.com/futuro/{dia}/{hora}/{minutos}
-        
-- No outro celular:
-
-    - Instalamos o [Android APP](/cod_android/app_debug.apk) que foi fieto en Android Studio (java) usando as bibliotecas Picasso (mostrar imagens da web) e Retrofit (consumo de API services) (http://square.github.io/picasso/ e http://blog.matheuscastiglioni.com.br/consumindo-web-service-no-android-com-retrofit). O código do app está localizado em 
-    [cod_android](/cod_android/).
-
-
-# Descrição da arquitetura
-
-O raspberry tira as imagens de um dos celulares que tem instalado do IP Webcam o pela câmera USB e joga na internet, faz 
-uma análise da imagem com o Computer Vision API, e a informação gerada e salvada num json e num dataset do pythonanywhere. 
-
-Com o outro celular, fazemos uso de um API service https://reynaldocv.pythonanywhere.com. esse servicio pega a imagem da internet e faz um análise con o API de Pesquisa em Visual Computational para saber a descricao da imagem. e no celular é so mostrar.
-
-# Exemplo 1
-
- <p align="center">
-     <img height="460" src="/IoT project - slides/img/app_foto_2.png">    
-     <img height="460" src="/IoT project - slides/img/app_foto_1.png"> 
-     <img height="460" src="/IoT project - slides/img/futuro_1.png"> 
-    
- 
+<p align="center">
+  <img src="/imgs/static.png">
 </p>
 
-# Exemplo com carrinhos
- <p align="center">
-     <img height="460" src="/IoT project - slides/img/carrinho_1.png">    
-     <img height="460" src="/IoT project - slides/img/carrinho_2.png"> 
-     <img height="460" src="/IoT project - slides/img/carrinho_6.png"> 
-    
- 
-</p>
+## Database setup 
 
+Go back to console and we execute the following commands: 
 
+```
+source .virtualenvs/hospital_env/bin/activate
+cd cronicos/cronicos/
 
+# Generate database
+python3 manage.py migrate
 
+# Generate the statics files
+python3 manage.py collectstatic
+
+```
+Modify the file settings.py the parameter ALLOWED HOST to add our URL: 
+```
+ALLOWED_HOSTS = ['192.168.1.12', "localhost", "127.0.0.1","reynaldocv.pythonanywhere.com"]
+```
+
+Now, you are done! :tada:
