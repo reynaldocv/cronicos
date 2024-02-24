@@ -174,16 +174,54 @@ Restart the Apache server using the following command:
 ```
 sudo service apache2 restart
 ```
-And the webpage is done!
-
-
-
-
-
+And the webpage is done! :tada:
 
 # Deploy on pythonanywhere.com
 
+## Steps
+1. steps on Consoles' tab
+2. steps on Web App's tab
+3. Database setup
 
+## Steps on Consoles' tab
+- First, we create a new console, and on it,
+```
+# Download the git project
+git clone https://github.com/reynaldocv/cronicos.git
+# Create a environment
+mkvirtualenv hospital_env --python=/usr/bin/python3.8
+# Install Django
+pip install django
+```
+## Steps on Web App's tab
+Create a Web app with Manual Config
+Head over to the Web tab and create a new web app, choosing the "Manual Configuration" option and the right version of Python (the same one you used to create your virtualenv).
+
+<p align="center">
+  <img src="/imgs/django.png">
+</p>
+
+<p align="center">
+  <img src="/imgs/env.png">
+</p>
+
+<p align="center">
+  <img src="/imgs/code.png">
+</p>
+
+<p align="center">
+  <img src="/imgs/wsgi.png">
+</p>
+
+<p align="center">
+  <img src="/imgs/static.png">
+</p>
+
+
+
+## Database setup 
+  
+  
 
 
 
