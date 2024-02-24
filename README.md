@@ -11,23 +11,23 @@ This system helps to improve the monitoring of sick people, and manage their
 
 # Deploy on Apache2 in Ubuntu 20.04
 ## Steps
-1.- Install Apapche2
-2.- List out the project's folder and file's path.
-3.- Collect static files.
-4.- Migrate the database.
-5.- Change the permission and ownership of the database files and other folders.
-6.- Make changes in the Apache config file.
-7.- Enable the site.
-8.- Install WSGI mod in Apache2.
-9.- Restart the Apache Server.
+1. Install Apapche2
+2. List out the project's folder and file's path.
+3. Collect static files.
+4. Migrate the database.
+5. Change the permission and ownership of the database files and other folders.
+6. Make changes in the Apache config file.
+7. Enable the site.
+8. Install WSGI mod in Apache2.
+9. Restart the Apache Server.
 
-# Step 1: Install Apache2
+## Step 1: Install Apache2
 the folowing are the commands to install Apache2 on Ubuntu 20.04
 ```
 sudo apt update
 sudo apt install apache2
 ```
-# Step 2: List out the project's folder/file path: 
+## Step 2: List out the project's folder/file path: 
 It is important to list the following paths: 
 
 > Directories
@@ -44,7 +44,7 @@ Application path - /home/ubuntu/hospital/cronicos/usuarios/
 Enviorment folder path - /home/ubuntu/hospita/hospital_env
 Wsgi File Path - /home/ubuntu/hospital/cronicos/cronicos/wsgi.py
 ```
-# Step 3: Collect Static Files
+## Step 3: Collect Static Files
 Django provides a mechanism for collecting static files into one place so that they can be served easily. 
 
 Open the file Setting.py located in /hospital/cronicos/cronicos/settings.py:
@@ -57,7 +57,140 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 STATICFILES=[STATIC_ROOT]
 
 ```
+Activate the source and collect the statics files using the following commands
 
+```
+sourde hospita/hospital_env/bin/activate
+python3 hospital/cronicos/manage.py collectstatic
+```
+
+## Step 4: Migrate the database
+Migrate the database using the MakeMigration and Migrate command:
+```
+python3 hospital/cronicos/manage.py makemigrations
+python3 hospital/cronicos/manage.py migrate
+```
+## Step 5: Change permission and ownership
+If you are using a SQLite database, then change the permissions of the SQLite file. Also, change the ownership of the Django project folders.
+
+The following commands will change the permission and ownership of the files and folders.
+```
+chmod 664 /hospital/cronicos/cronicos/db.sqlite3
+sudo chown :www-data /hospital/cronicos/db.sqlite3
+sudo chown :www-data /hospital/cronicos/
+sudo chown :www-data /hospital/cronicos/cronicos
+```
+## Step 6: Changes in Apache2 config file
+We need to make a few changes in the 000-default.conf file. Before that, though, make backup of the file. The following are the commands to open the file and create backup of the file.
+
+```
+# Go to the location - 
+cd /etc/apache2/sites-available
+
+# Take a backup of file
+sudo cp 000-default.conf 000-default.conf_backup
+
+# Open conf file using Vi
+sudo vi 000-default.conf
+
+```
+Add the below code to the file
+```
+Alias /static /home/ubuntu/hospital/cronicos/cronicos/static
+        <Directory /home/ubuntu/hospital/cronicos/cronicos/static>
+            Require all granted
+        </Directory>
+        <Directory /home/ubuntu/hospital/cronicos/cronicos/cronicos>
+            <Files wsgi.py>
+                Require all granted
+            </Files>
+        </Directory>
+        WSGIPassAuthorization On
+        WSGIDaemonProcess DemoProject python-path=/home/ubuntu/hospital/cronicos/cronicos python-home=/home/ubuntu/hospital/hospital_env
+        WSGIProcessGroup DemoProject
+        WSGIScriptAlias / /home/ubuntu/hospital/cronicos/cronicos/cronicos/wsgi.py
+```
+After adding the above snippet, the config fiel will look like this: 
+```
+<VirtualHost *:80>
+	# The ServerName directive sets the request scheme, hostname and port that
+	# the server uses to identify itself. This is used when creating
+	# redirection URLs. In the context of virtual hosts, the ServerName
+	# specifies what hostname must appear in the request's Host: header to
+	# match this virtual host. For the default virtual host (this file) this
+	# value is not decisive as it is used as a last resort host regardless.
+	# However, you must set it for any further virtual host explicitly.
+	#ServerName www.example.com
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+
+	# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	# error, crit, alert, emerg.
+	# It is also possible to configure the loglevel for particular
+	# modules, e.g.
+	#LogLevel info ssl:warn
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	# For most configuration files from conf-available/, which are
+	# enabled or disabled at a global level, it is possible to
+	# include a line for only one particular virtual host. For example the
+	# following line enables the CGI configuration for this host only
+	# after it has been globally disabled with "a2disconf".
+	#Include conf-available/serve-cgi-bin.conf
+	
+	Alias /static /home/ubuntu/hospital/cronicos/cronicos/static
+        <Directory /home/ubuntu/hospital/cronicos/cronicos/static>
+            Require all granted
+        </Directory>
+        <Directory /home/ubuntu/hospital/cronicos/cronicos/cronicos>
+            <Files wsgi.py>
+                Require all granted
+            </Files>
+        </Directory>
+        WSGIPassAuthorization On
+        WSGIDaemonProcess DemoProject python-path=/home/ubuntu/hospital/cronicos/cronicos python-home=/home/ubuntu/hospital/hospital_env
+        WSGIProcessGroup DemoProject
+        WSGIScriptAlias / /home/ubuntu/hospital/cronicos/cronicos/cronicos/wsgi.py
+</VirtualHost>
+```
+
+## Step 7: Enable the site
+Now enable the above conf file using the a2ensite command.
+```
+cd /etc/apache2/sites-available/
+sudo a2ensite 000-default.conf
+```
+## Step 8: Install WSGI mod in Apache2
+Install the WSGI mod library for the Apache 2 server using the following command. After installation, enable the WSGI.
+```
+sudo apt-get install libapache2-mod-wsgi-py3
+sudo a2enmod wsgi
+```
+## Step 9: Restart the Apache server
+Restart the Apache server using the following command:
+```
+sudo service apache2 restart
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- [x] #739
+- [ ] https://github.com/octo-org/octo-repo/issues/740
+- [ ] Add delight to the experience when all tasks are complete :tada:
 
 - Visão geral do projeto: 
 
