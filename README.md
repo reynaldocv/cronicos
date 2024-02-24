@@ -9,7 +9,25 @@ This system helps to improve the monitoring of sick people, and manage their
 
 - This web page was done using Django, python3, and SQLite
 
-# IoT-project (Vagas no Estacionamento)
+# Deploy on Apache2 in Ubuntu 20.04
+## Steps
+1.- Install Apapche2
+2.- List out the project's folder and file's path.
+3.- Collect static files.
+4.- Migrate the database.
+5.- Change the permission and ownership of the database files and other folders.
+6.- Make changes in the Apache config file.
+7.- Enable the site.
+8.- nstall WSGI mod in Apache2.
+9.-Restart the Apache Server.
+
+# Step 1: Install Apache2
+the folowing are the commands to install Apache2 on Ubuntu 20.04
+'''
+sudo apt update
+sudo apt install apache2
+'''
+
 
 - Visão geral do projeto: 
 
