@@ -18,14 +18,44 @@ This system helps to improve the monitoring of sick people, and manage their
 5.- Change the permission and ownership of the database files and other folders.
 6.- Make changes in the Apache config file.
 7.- Enable the site.
-8.- nstall WSGI mod in Apache2.
-9.-Restart the Apache Server.
+8.- Install WSGI mod in Apache2.
+9.- Restart the Apache Server.
 
 # Step 1: Install Apache2
 the folowing are the commands to install Apache2 on Ubuntu 20.04
 ```
 sudo apt update
 sudo apt install apache2
+```
+# Step 2: List out the project's folder/file path: 
+It is important to list the following paths: 
+
+> Directories
+
+```
+Folder name - /home/ubuntu/hospital/
+
+Project name - cronicos
+Project path - /home/ubuntu/hospital/cronicos
+
+Application name - usuarios
+Application path - /home/ubuntu/hospital/cronicos/usuarios/
+
+Enviorment folder path - /home/ubuntu/hospita/hospital_env
+Wsgi File Path - /home/ubuntu/hospital/cronicos/cronicos/wsgi.py
+```
+# Step 3: Collect Static Files
+Django provides a mechanism for collecting static files into one place so that they can be served easily. 
+
+Open the file Setting.py located in /hospital/cronicos/cronicos/settings.py:
+```
+# add the following code
+
+import os 
+STATIC_URL = '/static/' 
+STATIC_ROOT = os.path.join(BASE_DIR, "static/") 
+STATICFILES=[STATIC_ROOT]
+
 ```
 
 
