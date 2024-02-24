@@ -23,10 +23,10 @@ This system helps to improve the monitoring of sick people, and manage their
 
 # Step 1: Install Apache2
 the folowing are the commands to install Apache2 on Ubuntu 20.04
-'''
+```
 sudo apt update
 sudo apt install apache2
-'''
+```
 
 
 - Visão geral do projeto: 
