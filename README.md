@@ -239,9 +239,11 @@ python3 manage.py migrate
 python3 manage.py collectstatic
 
 ```
-Modify the file settings.py the parameter ALLOWED HOST to add our URL: 
+> [!IMPORTANT]
+> 
+Modify the parameter ALLOWED HOST to add our URL, in settings.py file: 
 ```
-ALLOWED_HOSTS = ['192.168.1.12', "localhost", "127.0.0.1","reynaldocv.pythonanywhere.com"]
+ALLOWED_HOSTS = ['192.168.1.12', "localhost", "127.0.0.1","**reynaldocv.pythonanywhere.com**"]
 ```
 
 Now, you are done! :tada:
