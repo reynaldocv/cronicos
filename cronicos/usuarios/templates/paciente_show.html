@@ -25,7 +25,7 @@
                     {{paciente.nombre}} 
                 </td> 
             
-                <td> <i class="fa fa-star">  </i> {{paciente.nacimiento|date:"d M Y"}} {{paciente.edad|safe}}</td>  
+                <td> <i class="fa fa-star">  </i> {{paciente.nacimiento|date:"d M Y"}} {{paciente.edad.str|safe}}</td>  
 
                 <td> <i style="color:lightskyblue" class="fa fa-id-card"></i> {{paciente.dni}} <td>
                     

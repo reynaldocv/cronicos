@@ -66,7 +66,7 @@
         </td>         
 
         <td> 
-          {{x.edad|safe}}
+          {{x.edad.str|safe}}
          
 
         </td>        
@@ -74,9 +74,9 @@
           <td>  <i style="color:lightskyblue" class="fa fa-id-card"></i> &nbsp{{x.dni}}<br>
                 <i class="fa fa-phone"></i> &nbsp{{x.celular}} </td>
 
-          <td>  </i> {{x.mosare|safe}}</td>
+          <td>  </i> {{x.lastMosare|safe}}</td>
           
-          <td>  {{x.pie|safe}} <br> {{x.ekg|safe}}          
+          <td>  {{x.lastPie|safe}} <br> {{x.lastEkg|safe}}          
           </td>          
 
           <td class="w3-center">
