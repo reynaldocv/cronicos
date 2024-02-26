@@ -82,22 +82,7 @@ def html_Imc(num, edad):
     return ans 
 
 def html_ImcDescripcion(num):
-    ans = ""
-    if num: 
-        num = float(num)       
-        if num < 18.5: 
-            ans = '<span class="w3-tag w3-pale-blue"> Inferior </span>'
-        
-        elif num < 25: 
-            ans = "normal"
-
-        elif num < 30: 
-            ans = "Superior"
-
-        else: 
-            ans = '<span class="w3-tag w3-pale-blue"> Obesidad </span>'
-
-    return ans
+    return ""
 
 def html_morisky(num):
     if num == "1":
@@ -131,7 +116,7 @@ def html_pie(pie):
   
     return ans 
 
-def html_cardiograma(ekg):
+def html_ekg(ekg):
     ans = ''
     if ekg: 
         if ekg.esNormal: 
@@ -146,8 +131,10 @@ def html_cardiograma(ekg):
 
 
 def html_edad(fechaNacimiento, estaMuerto, fechaDeceso, format):
-    ans = ''
-    
+    ans = {}
+
+    ans["str"] = ""
+
     if format == 0:                 
         if estaMuerto: 
             years = ageInYears(fechaDeceso, fechaNacimiento)
@@ -155,14 +142,14 @@ def html_edad(fechaNacimiento, estaMuerto, fechaDeceso, format):
         else: 
             years = ageInYears(date.today(), fechaNacimiento)
         
-        ans += '<span class="w3-tag w3-sand">' + str(years) + ' años </span>'
+        ans["str"] += '<span class="w3-tag w3-sand">' + str(years) + ' años </span>'
 
     elif format == 1: 
-        ans += meses[fechaNacimiento.month] + " " 
-        ans += str(fechaNacimiento.year)  
+        ans["str"] += meses[fechaNacimiento.month] + " " 
+        ans["str"] += str(fechaNacimiento.year)  
         
         if format == 0: 
-            ans += ""
+            ans["str"] += ""
 
         if estaMuerto: 
             years = ageInYears(fechaDeceso, fechaNacimiento)
@@ -170,7 +157,9 @@ def html_edad(fechaNacimiento, estaMuerto, fechaDeceso, format):
         else: 
             years = ageInYears(date.today(), fechaNacimiento)
         
-        ans += '<span class="w3-tag w3-sand">' + str(years) + ' años </span>'
+        ans["str"] += '<span class="w3-tag w3-sand">' + str(years) + ' años </span>'
+
+    ans["int"] = years
 
     return ans 
 
@@ -233,7 +222,7 @@ def html_chequeo_icon(pie):
         ans["icon"] = '<i style="color:red" class="fa fa-shoe-prints"></i>'
 
     else:
-        ans["icon" ]= '<i style="color:grat" class="fa fa-shoe-prints"></i>'
+        ans["icon" ]= '<i style="color:gray" class="fa fa-shoe-prints"></i>'
     
     ans["day"] = pie.data.day
 

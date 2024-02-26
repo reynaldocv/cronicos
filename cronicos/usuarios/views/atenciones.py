@@ -113,7 +113,6 @@ def resumen(request):
 
     prevDotacion = Atencion.objects.filter(fecha__month = prevMonth, fecha__year = prevYear)
     lastDotacion = Atencion.objects.filter(fecha__month = thisMonth, fecha__year = thisYear)
-
     prevDot = {}
     lastDot = {}
 
@@ -131,6 +130,19 @@ def resumen(request):
         
         if _paciente.dni in prevDot: 
             _paciente.prevAtencion = prevDot[_paciente.dni]    
+
+        lastPies = Pie.objects.filter(dni = _paciente.dni).order_by("-data")
+        lastEkgs = Ekg.objects.filter(dni = _paciente.dni).order_by("-data")
+        lastMosares = Mosare.objects.filter(dni = _paciente.dni).order_by("-data")
+
+        if len(lastPies) > 0: 
+            _paciente.lastPie = codeHtml.html_pie(lastPies[0])
+
+        if len(lastEkgs) > 0: 
+            _paciente.lastEkg = codeHtml.html_ekg(lastEkgs[0])
+
+        if len(lastMosares) > 0: 
+            _paciente.lastMosare = codeHtml.html_mosare(lastMosares[0])
 
     #pies = Pie.objects.dis
 
@@ -215,7 +227,7 @@ def atencion_kit(_dni, _thisYear):
             consultas["perimetro"].append(atencion.perimetro)
             consultas["morisky"].append(codeHtml.html_morisky(atencion.morisky))
             consultas["imc"].append(codeHtml.html_Imc(atencion.imc, atencion.edad))
-            consultas["imcDescripcion"].append(codeHtml.html_ImcDescripcion(atencion.imc))
+            consultas["imcDescripcion"].append(atencion.imcDescripcion)
             consultas["observacion"].append(atencion.observacion)            
             consultas["status"].append({"status": 2, "month": mes})
 
@@ -352,6 +364,7 @@ def dotacion_new(request):
     _maximum = date(_thisYear, _thisMonth, last)
     
     mypaciente = paciente_full(_dni)
+    mypaciente.edadAtencion = codeHtml.ageInYears(_maximum, mypaciente.nacimiento)
 
     _id = "-".join([_dni, str(_prevMonth), str(_prevYear)])
 
@@ -399,6 +412,8 @@ def dotacion_add(request):
         atencion.hemotest = request.POST["nowHemotest"]
         atencion.peso = request.POST["nowPeso"]
         atencion.talla = request.POST["nowTalla"]
+        atencion.imc = request.POST["nowImc"]
+        atencion.imcDescripcion = request.POST["nowImcDescripcion"]
         atencion.perimetro = request.POST["nowPerimetro"]
         atencion.morisky = request.POST["nowMorisky"]
 
@@ -481,6 +496,8 @@ def dotacion_alter(request):
         atencion.hemotest = request.POST["nowHemotest"]
         atencion.peso = request.POST["nowPeso"]
         atencion.talla = request.POST["nowTalla"]
+        atencion.imc = request.POST["nowImc"]
+        atencion.imcDescripcion = request.POST["nowImcDescripcion"]
         atencion.perimetro = request.POST["nowPerimetro"]
         atencion.morisky = request.POST["nowMorisky"]
 

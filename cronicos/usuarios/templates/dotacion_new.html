@@ -83,6 +83,19 @@
                         <input class="w3-input w3-border" step="0.001" name="nowTalla" id="now_talla" type="number" placeholder="Talla" min = "0.2" max = "2.5" onkeyup="validation()">                
                     </td>
                 </tr>
+
+                <tr>
+                    <td  class = "w3-right">IMC/Detalles:</td>
+                    <td><input class="w3-input w3-border" type="number" placeholder="IMC" readonly value="{{prevAtencion.imc}}"></td>
+                    <td><input class="w3-input w3-border" type="text" placeholder="IMC Descripcion" readonly value="{{prevAtencion.imcDescripcion}}"></td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input type="hidden" id = "now_edad" value ="{{paciente.edadAtencion}}">
+                        <input class="w3-input w3-border" readonly  name="nowImc" id="now_imc" type="number" >
+                    </td>
+                    <td class="w3-center w3-pale-yellow">
+                        <input class="w3-input w3-border" readonly name="nowImcDescripcion" id="now_imcDescripcion" type="Text" >                
+                    </td>
+                </tr>
             
                 <tr>
                     <td  class = "w3-right">Perímetro(cm)/test Morisky:</td>
@@ -133,8 +146,10 @@
     {
         talla = document.getElementById("now_talla");
         peso = document.getElementById("now_peso");
+        imc = document.getElementById("now_imc");
+        imcDescripcion = document.getElementById("now_imcDescripcion");
+        edad = parseInt(document.getElementById("now_edad").value);
         
-
         dotacion = document.getElementById("now_dotation");
         data = document.getElementById("now_data");
 
@@ -147,6 +162,40 @@
         else
         {
             button.disabled = true; 
+        }
+        
+        if (peso.value != "" && talla.value != "")
+        {            
+           
+            _peso = parseFloat(peso.value);
+            _talla = parseFloat(talla.value);
+
+            tmp = _peso/(_talla*_talla)
+
+            if (edad < 60)
+            {
+                if (tmp < 18.5)
+                    strTmp = "Anormal";
+                else if (tmp < 25)
+                    strTmp = "Normal";
+                else if (tmp < 30)
+                    strTmp = "Sobrepeso";
+                else    
+                    strTmp = "Obeso";
+            }
+            else
+            {
+                if (tmp < 23)            
+                    strTmp = "Anormal";
+                else if (tmp <= 28)
+                    strTmp = "Normal";
+                else if (tmp <=32)
+                    strTmp = "Sobrepeso";
+                else    
+                    strTmp = "Obeso";
+            }
+            imc.value = tmp;
+            imcDescripcion.value = strTmp; 
         }
 
     }
