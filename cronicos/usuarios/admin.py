@@ -31,8 +31,8 @@ class EkgAdmin(admin.ModelAdmin):
 class EspecialidadAdmin(admin.ModelAdmin):
     list_display = ("id","especialidad")
     
-class MosareAdmin(admin.ModelAdmin):
-    list_display = ("id","dni", "tasa", "tasaDescripcion")
+#class MosareAdmin(admin.ModelAdmin):
+#    list_display = ("id","dni", "data", "tamizado" "descripcion")
 
 admin.site.register(Hospital, HospitalAdmin)
 admin.site.register(Paciente, PacienteAdmin)
@@ -40,7 +40,8 @@ admin.site.register(Atencion, AtencionAdmin)
 admin.site.register(Pie, PieAdmin)
 admin.site.register(Ekg, EkgAdmin )
 admin.site.register(Enfermedad)
-admin.site.register(Mosare, MosareAdmin)
+#admin.site.register(Mosare, MosareAdmin)
+admin.site.register(Mosare)
 admin.site.register(Especialidad, EspecialidadAdmin)
 admin.site.register(Referencia)
 

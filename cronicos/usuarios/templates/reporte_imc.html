@@ -14,7 +14,7 @@
 
 {% include "_header.html" %}
 
-<h2 class="w3-center">Estadísticas de atenciones realizadas</h2>
+<h2 class="w3-center">Estadísticas de indice de masa corporal</h2>
 
 <div class="w3-row">
   <div class="w3-col w3-left" style="width:70%"><p></p></div>
@@ -23,7 +23,7 @@
     <div class="w3-panel w3-white w3-card w3-display-container">
     
       <div class="w3-row  w3-section">
-          <form action="{% url 'reporte_dot'%}" method="post">
+          <form action="{% url 'reporte_imc'%}" method="post">
                 {% csrf_token %} 
                 <div class="w3-col" style="width:20%"> &nbsp;&nbsp; Año: </div>
                 <div class="w3-col" style="width:45%">     
@@ -46,39 +46,28 @@
   <div class="w3-rest w3-container">
     <table class="w3-table-all" id = "myTable">
       <thead>
-        <tr class="w3-light-grey">
-          <th class="w3-center"> Atenciones </th>  
+        <tr class="w3-light-grey">        
+          <th class="w3-center"> # </th>
+          <th class="w3-center"> Descripción</th>  
           {% for mes in meses %}
             <th class="w3-center">{{mes}}</th>     
           {% endfor %}   
-        </tr>
-      </thead>
-        <tr>  
-          <th> Dotacion I ( <i style="color:lightblue" class="fa fa-user-doctor"></i>  )</th>
-          {% for dot1 in dotacion1 %}
-            <td class="w3-center">{{dot1}}</td>     
+        </tr>        
+      </thead>          
+            {% for especialidad in estadisticas.items %}
+           <tr>
+              {% for items in especialidad %}              
+                {% for item in items %}
+                    <td class="w3-center">{{item}}</td> 
+                {% endfor %}
+              {% endfor %}
+            </tr>            
           {% endfor %} 
         </tr>
         <tr>  
-          <th> Dotacion II ( <i style="color:lightblue" class="fa fa-tablets"></i>  ) </th>
-          {% for dot2 in dotacion2 %}
-            <td class="w3-center">{{dot2}}</td>     
-          {% endfor %} 
-        </tr>
-        <tr>  
-            <th>  Dotacion III ( <i style="color:lightblue" class="fa fa-capsules"></i> )</th>
-            {% for dot3 in dotacion3 %}
-              <td class="w3-center">{{dot3}}</td>     
-            {% endfor %} 
-          </tr>
-          <tr>  
-            <th> </i> Otros ( <i style="color:gray" class="fa fa-exchange"></i> )</th>
-            {% for dot0 in dotacion0 %}
-              <td class="w3-center">{{dot0}}</td>     
-            {% endfor %} 
-          </tr>
-        <tr>  
-          <th> Total</th>
+        
+          <td></td>
+          <th class="w3-center"> Total</th>
           {% for totalm in totalmes %}
             <td class="w3-center">{{totalm}}</td>     
           {% endfor %} 
@@ -87,19 +76,20 @@
           <td colspan="14"> <br></td>
         </tr>
         <tr>  
-          <th> Total de electrocardiograma realizados en la Base de datos </th>
+          <th colspan="4" class="w3-center"> Total de referencias en la Base de datos </th>
           <td colspan="12"></td>
           <th>{{total}}</th>
         </tr>
     </table>
     <br>
     
-    <div class = "w3-right">    
-    <form action="{% url 'excel_dot'%}" method="POST">
-      {% csrf_token %} 
-      <input type="hidden" name="nowYear" value="{{years.now}}">
-      &nbsp;&nbsp;<button class="w3-button w3-pale-green w3-border"><div class="w3-large"><i style="color:green" class="fa fa-file"></i> Generar Documento  </div></button>
-    </form>
+    <div class = "w3-right">
+
+      <form action="{% url 'excel_imc'%}" method="POST">
+        {% csrf_token %} 
+        <input type="hidden" name="nowYear" value="{{years.now}}">
+        &nbsp;&nbsp;<button class="w3-button w3-pale-green w3-border"><div class="w3-large"><i style="color:green" class="fa fa-file"></i> Generar Documento  </div></button>
+      </form>
     </div>
   </div>
 </div>

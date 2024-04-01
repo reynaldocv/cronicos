@@ -73,13 +73,17 @@ class Mosare(models.Model):
 
     data = models.DateField(default="1900-01-01")
 
-    creatinina = models.CharField(max_length = 6, default ="")
-    tfge = models.CharField(max_length = 6, default ="")
-    albuminuria = models.CharField(max_length = 6, default ="")
-    creatinuria = models.CharField(max_length = 6, default ="")
-    tasa = models.CharField(max_length = 20, default ="")
-    tasaDescripcion = models.CharField(max_length = 20, default ="")
-    
+    #creatinina = models.CharField(max_length = 6, default ="")
+    #tfge = models.CharField(max_length = 6, default ="")
+    #albuminuria = models.CharField(max_length = 6, default ="")
+    #creatinuria = models.CharField(max_length = 6, default ="")
+    #tasa = models.CharField(max_length = 20, default ="")
+
+    tamizado = models.BooleanField(default = False)
+
+    #tamizadodescripcion = models.CharField(max_length = 20, default ="")
+    descripcion = models.CharField(max_length = 20, default ="")
+
 class Pie(models.Model):
     id = models.CharField(max_length = 20, primary_key = True, default = "xxxxxxxx-xx-xxxx")
 

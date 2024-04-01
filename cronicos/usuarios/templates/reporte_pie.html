@@ -84,9 +84,11 @@
     
     <div class = "w3-right">
 
-    &nbsp;&nbsp;<a href="#"> 
-    <button class="w3-button w3-pale-green w3-border"><div class="w3-large"><i style="color:green" class="fa fa-file"></i> Generar Documento  </div></button>
-    </a>
+      <form action="{% url 'excel_pie'%}" method="POST">
+        {% csrf_token %} 
+        <input type="hidden" name="nowYear" value="{{years.now}}">
+        &nbsp;&nbsp;<button class="w3-button w3-pale-green w3-border"><div class="w3-large"><i style="color:green" class="fa fa-file"></i> Generar Documento  </div></button>
+      </form>
     </div>
   </div>
 </div>

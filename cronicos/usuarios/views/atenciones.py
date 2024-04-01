@@ -28,7 +28,7 @@ def isValidMesYear(_month, _year, minData):
     data = date(_year, _month, 1)
     today = date.today()
 
-    return _minData <= data < today
+    return _minData <= data <= today
 
 def resumenm(request):
     _pacientes = pacientes_full(True, None)
@@ -64,12 +64,12 @@ def resumenm(request):
         if len(atencion) > 0: 
             paciente.prevAtencion = codeHtml.html_dotacion(atencion[0])
 
-        mosares = Mosare.objects.filter(dni = _dni).order_by("-data")
+        #mosares = Mosare.objects.filter(dni = _dni).order_by("-data")
 
-        if len(mosares) > 0: 
-            paciente.mosare = codeHtml.html_mosare(mosares[0])
-        else: 
-            paciente.mosare = codeHtml.html_mosare(None)
+        #if len(mosares) > 0: 
+        #    paciente.mosare = codeHtml.html_mosare(mosares[0])
+        #else: 
+        #    paciente.mosare = codeHtml.html_mosare(None)
 
         pies = Pie.objects.filter(dni = _dni).order_by("-data")
 
@@ -860,12 +860,8 @@ def mosare_add(request):
     mosare.data = request.POST["nowData"] 
     mosare.dni = Paciente.objects.filter(dni = _dni)[0]
 
-    mosare.creatinina = request.POST["nowCreatinina"] 
-    mosare.tfge = request.POST["nowTfge"]
-    mosare.albuminuria = request.POST["nowAlbuminuria"]
-    mosare.creatinuria = request.POST["nowCreatinuria"]
-    mosare.tasa = request.POST["nowTasa"]
-    mosare.tasaDescripcion = request.POST["nowDescripcion"]
+    mosare.tamizado = request.POST["nowTamizado"]
+    mosare.descripcion = request.POST["nowDescripcion"]
 
     mosare.save()
 

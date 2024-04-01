@@ -97,10 +97,10 @@ def html_mosare(mosare):
     ans = ''
     
     if mosare: 
-        ans += ' <i style="color:gray" class="fa fa-microscope"></i> '
-        fecha = meses[mosare.data.month - 1] + " " + str(mosare.data.year)
-        if mosare.tasa  != "":
-            ans += fecha  + "<br>" + mosare.tasaDescripcion
+        ans += ' <i style="color:gray" class="fa fa-microscope"></i> '        
+        ans += meses[mosare.data.month] + " " + str(mosare.data.year)
+        if not mosare.tamizado:
+            ans += '<br><span class="w3-tag w3-sand"> Tamizado </span>'
 
     return ans 
 

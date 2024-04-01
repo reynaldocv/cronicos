@@ -69,8 +69,21 @@ urlpatterns = [
     path("superAdmin"       , super_admin     , name = "super_admin"),
 
     path("consulta/pacientes/" , reporte_01, name = 'reporte_01'),
+    path("consulta/nuevos/" , reporte_02, name = 'reporte_02'),
     path("consulta/pies/" , reporte_pie, name = 'reporte_pie'),
     path("consulta/ekgs/" , reporte_ekg, name = 'reporte_ekg'),
+    path("consulta/referencias/" , reporte_ref, name = 'reporte_ref'),    
     path("consulta/dotaciones/" , reporte_dot, name = 'reporte_dot'),
+    path("consulta/imc/" , reporte_imc, name = 'reporte_imc'),
+    path("consulta/deadman/" , reporte_deadman, name = 'reporte_deadman'),
 
+    path("excel/pacientes/", excel_01, name = "excel_01"),    
+    path("excel/new/", excel_02, name = "excel_02"),    
+    path("excel/dot/", excel_dot, name = "excel_dot"),    
+    path("excel/pie/", excel_pie, name = "excel_pie"),    
+    path("excel/ekg/", excel_ekg, name = "excel_ekg"),
+    path("excel/imc/", excel_imc, name = "excel_imc"),    
+    path("excel/ref/", excel_ref, name = "excel_ref"),   
+    path("excel/dead/", excel_dead, name = "excel_dead"),   
+    
 ] 

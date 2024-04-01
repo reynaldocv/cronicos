@@ -14,7 +14,6 @@ Meses = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Ag
 
 
 def paciente_full(_dni):
-
     _paciente = Paciente.objects.filter(dni = _dni)[0]
 
     _paciente.edad = codeHtml.html_edad(_paciente.nacimiento, _paciente.muerto, _paciente.fechaMuerto, 0)
